@@ -1,0 +1,8 @@
+.DS_Store
+*.class
+__pycache__/
+*.pyc
+node_modules/
+.idea/
+.vscode/
+*.iml

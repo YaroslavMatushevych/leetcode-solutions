@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LC Solutions — Yaroslav Matushevych</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080b10;
+      --bg1:       #0d1117;
+      --bg2:       #161b22;
+      --bg3:       #1f2937;
+      --border:    #21262d;
+      --border2:   #30363d;
+      --text:      #e6edf3;
+      --muted:     #7d8590;
+      --cyan:      #00d4ff;
+      --cyan-dim:  rgba(0, 212, 255, 0.12);
+      --amber:     #f0a500;
+      --amber-dim: rgba(240, 165, 0, 0.12);
+      --green:     #3fb950;
+      --green-dim: rgba(63, 185, 80, 0.15);
+      --yellow:    #d29922;
+      --yellow-dim:rgba(210, 153, 34, 0.15);
+      --red:       #f85149;
+      --red-dim:   rgba(248, 81, 73, 0.15);
+      --purple:    #a371f7;
+      --purple-dim:rgba(163, 113, 247, 0.12);
+      --radius:    10px;
+      --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8, 11, 16, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1rem, 5vw, 3rem);
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: #080b10;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span {
+      color: var(--cyan);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--border2);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan-dim);
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: #080b10;
+      border-color: var(--cyan);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #00eaff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 5vw, 3rem) 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse at center top, rgba(0,212,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      margin-bottom: 1.25rem;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 1rem;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--muted);
+      font-weight: 400;
+      animation: fadeDown 0.6s 0.2s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── STATS ─── */
+    .stats-bar {
+      max-width: 1280px;
+      margin: 3rem auto 0;
+      padding: 0 clamp(1rem, 5vw, 3rem);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .stat-card {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      text-align: center;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .stat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-card.total .stat-number { color: var(--text); }
+    .stat-card.easy  .stat-number { color: var(--green); }
+    .stat-card.medium .stat-number { color: var(--yellow); }
+    .stat-card.hard  .stat-number { color: var(--red); }
+    .stat-card.langs .stat-number { color: var(--purple); font-size: 1.1rem; letter-spacing: -0.02em; }
+
+    /* ─── CONTROLS ─── */
+    .controls {
+      max-width: 1280px;
+      margin: 2.5rem auto 0;
+      padding: 0 clamp(1rem, 5vw, 3rem);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 12px 9px 36px;
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .search-input::placeholder { color: var(--muted); }
+    .search-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--bg1);
+      color: var(--muted);
+      transition: all var(--transition);
+    }
+
+    .filter-btn:hover { border-color: var(--border2); color: var(--text); }
+
+    .filter-btn.active {
+      color: var(--bg);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .filter-btn.active.all    { background: var(--text); color: var(--bg); }
+    .filter-btn.active.easy   { background: var(--green); }
+    .filter-btn.active.medium { background: var(--yellow); }
+    .filter-btn.active.hard   { background: var(--red); }
+    .filter-btn.active.python { background: var(--cyan); }
+    .filter-btn.active.java   { background: var(--amber); }
+    .filter-btn.active.typescript { background: var(--purple); }
+    .filter-btn.active.lang-all   { background: var(--text); color: var(--bg); }
+
+    .divider {
+      width: 1px; height: 28px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* ─── RESULTS COUNT ─── */
+    .results-info {
+      max-width: 1280px;
+      margin: 1.5rem auto 0;
+      padding: 0 clamp(1rem, 5vw, 3rem);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .results-info span { color: var(--cyan); }
+
+    /* ─── GRID ─── */
+    .grid {
+      max-width: 1280px;
+      margin: 1.25rem auto 0;
+      padding: 0 clamp(1rem, 5vw, 3rem) 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      animation: cardIn 0.5s ease both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card:hover {
+      border-color: var(--border2);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    .card-header {
+      padding: 1rem 1.25rem 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .problem-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 2px 8px;
+      background: var(--bg2);
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .card-title-wrap { flex: 1; min-width: 0; }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .badge-easy   { background: var(--green-dim);  color: var(--green);  border-color: rgba(63,185,80,0.2); }
+    .badge-medium { background: var(--yellow-dim); color: var(--yellow); border-color: rgba(210,153,34,0.2); }
+    .badge-hard   { background: var(--red-dim);    color: var(--red);    border-color: rgba(248,81,73,0.2); }
+    .badge-python { background: var(--cyan-dim);   color: var(--cyan);   border-color: rgba(0,212,255,0.2); }
+    .badge-java   { background: var(--amber-dim);  color: var(--amber);  border-color: rgba(240,165,0,0.2); }
+    .badge-typescript { background: var(--purple-dim); color: var(--purple); border-color: rgba(163,113,247,0.2); }
+
+    .card-actions {
+      padding: 0 1.25rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .lc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: all var(--transition);
+    }
+
+    .lc-link:hover {
+      color: var(--amber);
+      border-color: rgba(240, 165, 0, 0.4);
+      background: var(--amber-dim);
+    }
+
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      background: var(--cyan-dim);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .toggle-btn:hover {
+      background: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+    }
+
+    .toggle-btn svg {
+      transition: transform var(--transition);
+    }
+
+    .toggle-btn.open svg { transform: rotate(180deg); }
+
+    /* ─── CODE BLOCK ─── */
+    .code-section {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+      opacity: 0;
+    }
+
+    .code-section.open {
+      max-height: 600px;
+      opacity: 1;
+    }
+
+    .code-inner {
+      border-top: 1px solid var(--border);
+      padding: 0;
+      position: relative;
+    }
+
+    .code-lang-label {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--bg2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .code-inner pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 12.5px !important;
+      line-height: 1.65 !important;
+      padding: 1.25rem !important;
+      background: #0d1117 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border2) transparent;
+    }
+
+    .code-inner pre::-webkit-scrollbar { width: 5px; }
+    .code-inner pre::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+    }
+
+    .empty-state .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.4;
+    }
+
+    .empty-state p { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1rem, 5vw, 3rem);
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer-text a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    .footer-text a:hover { text-decoration: underline; }
+
+    .footer-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .divider { display: none; }
+      .controls { gap: 8px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-inner { gap: 0.5rem; }
+      .logo-text { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">LC</div>
+      <span class="logo-text">LC <span>Solutions</span></span>
+    </a>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="https://github.com/YaroslavMatushevych/leetcode-solutions" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="btn btn-primary" href="https://leetcode.com" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.823-.662l-4.974-4.957c-.466-.467-.7-1.054-.7-1.735s.234-1.268.7-1.735l4.974-4.957c.466-.467 1.111-.662 1.823-.662s1.357.195 1.823.662l2.697 2.607c.566.55 1.48.536 2.03-.031.55-.566.536-1.48-.031-2.03l-2.716-2.625c-.715-.693-1.618-1.148-2.585-1.355V3.5a1.5 1.5 0 00-3 0v.74c-1.787.386-3.365 1.49-4.374 3.09L3.41 10.063c-1.06 1.688-1.06 3.79 0 5.478l1.023 1.632c1.009 1.6 2.587 2.704 4.374 3.09V21.5a1.5 1.5 0 003 0v-.777c.967-.207 1.87-.662 2.585-1.355l2.716-2.625c.567-.55.581-1.464.031-2.03-.55-.567-1.464-.581-2.03-.031z"/></svg>
+        LeetCode
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-tag">actively solving</div>
+  <h1>Algorithm <span class="accent">Solutions</span></h1>
+  <p class="hero-sub">Python · Java · TypeScript — clean, annotated solutions with explanations</p>
+</section>
+
+<!-- ─── STATS ─── -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-card total">
+    <div class="stat-number" id="statTotal">0</div>
+    <div class="stat-label">Total Solved</div>
+  </div>
+  <div class="stat-card easy">
+    <div class="stat-number" id="statEasy">0</div>
+    <div class="stat-label">Easy</div>
+  </div>
+  <div class="stat-card medium">
+    <div class="stat-number" id="statMedium">0</div>
+    <div class="stat-label">Medium</div>
+  </div>
+  <div class="stat-card hard">
+    <div class="stat-number" id="statHard">0</div>
+    <div class="stat-label">Hard</div>
+  </div>
+  <div class="stat-card langs">
+    <div class="stat-number" id="statLangs">—</div>
+    <div class="stat-label">Languages</div>
+  </div>
+</div>
+
+<!-- ─── CONTROLS ─── -->
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input class="search-input" id="searchInput" type="text" placeholder="Search by number or title…" autocomplete="off" />
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="filter-group" id="diffFilter">
+    <button class="filter-btn active all" data-diff="all">All</button>
+    <button class="filter-btn easy"   data-diff="easy">Easy</button>
+    <button class="filter-btn medium" data-diff="medium">Medium</button>
+    <button class="filter-btn hard"   data-diff="hard">Hard</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="filter-group" id="langFilter">
+    <button class="filter-btn active lang-all" data-lang="all">All</button>
+    <button class="filter-btn python"     data-lang="python">Python</button>
+    <button class="filter-btn java"       data-lang="java">Java</button>
+    <button class="filter-btn typescript" data-lang="typescript">TypeScript</button>
+  </div>
+</div>
+
+<!-- ─── RESULTS INFO ─── -->
+<div class="results-info" id="resultsInfo"></div>
+
+<!-- ─── GRID ─── -->
+<div class="grid" id="grid"></div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-text">Built with ❤️ by <a href="https://github.com/YaroslavMatushevych" target="_blank">Yaroslav Matushevych</a></p>
+    <div class="footer-links">
+      <a href="https://github.com/YaroslavMatushevych/leetcode-solutions" target="_blank">Repository</a>
+      <a href="https://leetcode.com/u/YaroslavMatushevych/" target="_blank">LeetCode Profile</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+//  SOLUTIONS DATA — add your solutions here
+// ═══════════════════════════════════════════
+const SOLUTIONS = [
+  {
+    id: 1,
+    title: "Two Sum",
+    difficulty: "easy",
+    language: "python",
+    leetcodeUrl: "https://leetcode.com/problems/two-sum/",
+    approach: "Hash Map — O(n) time",
+    code: `class Solution:
+    def twoSum(self, nums: list[int], target: int) -> list[int]:
+        # Store {value: index} for O(1) lookups
+        seen: dict[int, int] = {}
+
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in seen:
+                return [seen[complement], i]
+            seen[num] = i
+
+        return []  # guaranteed to have a solution`,
+  },
+  {
+    id: 21,
+    title: "Merge Two Sorted Lists",
+    difficulty: "easy",
+    language: "typescript",
+    leetcodeUrl: "https://leetcode.com/problems/merge-two-sorted-lists/",
+    approach: "Iterative with dummy node — O(n+m) time",
+    code: `class ListNode {
+  val: number;
+  next: ListNode | null;
+  constructor(val = 0, next: ListNode | null = null) {
+    this.val = val;
+    this.next = next;
+  }
+}
+
+function mergeTwoLists(
+  list1: ListNode | null,
+  list2: ListNode | null
+): ListNode | null {
+  // Dummy head simplifies edge cases
+  const dummy = new ListNode(-1);
+  let current = dummy;
+
+  while (list1 !== null && list2 !== null) {
+    if (list1.val <= list2.val) {
+      current.next = list1;
+      list1 = list1.next;
+    } else {
+      current.next = list2;
+      list2 = list2.next;
+    }
+    current = current.next;
+  }
+
+  // Attach remaining nodes
+  current.next = list1 ?? list2;
+  return dummy.next;
+}`,
+  },
+  {
+    id: 53,
+    title: "Maximum Subarray",
+    difficulty: "medium",
+    language: "java",
+    leetcodeUrl: "https://leetcode.com/problems/maximum-subarray/",
+    approach: "Kadane's Algorithm — O(n) time, O(1) space",
+    code: `class Solution {
+    public int maxSubArray(int[] nums) {
+        // Kadane's: track current and global max
+        int currentMax = nums[0];
+        int globalMax  = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            // Either extend the existing subarray or start fresh
+            currentMax = Math.max(nums[i], currentMax + nums[i]);
+            globalMax  = Math.max(globalMax, currentMax);
+        }
+
+        return globalMax;
+    }
+}`,
+  },
+];
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+let activeDiff = "all";
+let activeLang = "all";
+let query = "";
+
+// ─── STATS ───
+function updateStats() {
+  const total  = SOLUTIONS.length;
+  const easy   = SOLUTIONS.filter(s => s.difficulty === "easy").length;
+  const medium = SOLUTIONS.filter(s => s.difficulty === "medium").length;
+  const hard   = SOLUTIONS.filter(s => s.difficulty === "hard").length;
+  const langs  = [...new Set(SOLUTIONS.map(s => s.language))];
+
+  animateCount("statTotal",  total);
+  animateCount("statEasy",   easy);
+  animateCount("statMedium", medium);
+  animateCount("statHard",   hard);
+
+  const langMap = { python: "Py", java: "Java", typescript: "TS" };
+  document.getElementById("statLangs").textContent =
+    langs.map(l => langMap[l] || l).join(" · ");
+}
+
+function animateCount(id, target) {
+  const el = document.getElementById(id);
+  const duration = 600;
+  const start = performance.now();
+  const from = 0;
+  function step(now) {
+    const pct = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - pct, 3);
+    el.textContent = Math.round(from + (target - from) * ease);
+    if (pct < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ─── FILTER + RENDER ───
+function getFiltered() {
+  return SOLUTIONS.filter(s => {
+    const matchDiff = activeDiff === "all" || s.difficulty === activeDiff;
+    const matchLang = activeLang === "all" || s.language === activeLang;
+    const q = query.trim().toLowerCase();
+    const matchQ = !q ||
+      String(s.id).includes(q) ||
+      s.title.toLowerCase().includes(q);
+    return matchDiff && matchLang && matchQ;
+  }).sort((a, b) => a.id - b.id);
+}
+
+function langLabel(lang) {
+  return { python: "Python", typescript: "TypeScript", java: "Java" }[lang] || lang;
+}
+
+function renderCards() {
+  const filtered = getFiltered();
+  const grid = document.getElementById("grid");
+  const info = document.getElementById("resultsInfo");
+
+  info.innerHTML = `Showing <span>${filtered.length}</span> of <span>${SOLUTIONS.length}</span> solutions`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <p>No solutions match your filters.</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map((s, idx) => `
+    <div class="card" style="animation-delay:${idx * 0.06}s" data-id="${s.id}">
+      <div class="card-header">
+        <span class="problem-num">#${s.id}</span>
+        <div class="card-title-wrap">
+          <div class="card-title">${s.title}</div>
+          <div class="card-meta">
+            <span class="badge badge-${s.difficulty}">${s.difficulty}</span>
+            <span class="badge badge-${s.language}">${langLabel(s.language)}</span>
+            ${s.approach ? `<span class="badge" style="background:var(--bg2);color:var(--muted);border-color:var(--border)">${s.approach}</span>` : ""}
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="lc-link" href="${s.leetcodeUrl}" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6v2H5v11h11v-5h2v6a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z"/></svg>
+          Open on LeetCode
+        </a>
+        <button class="toggle-btn" onclick="toggleCode(${s.id}, this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          View Code
+        </button>
+      </div>
+      <div class="code-section" id="code-${s.id}">
+        <div class="code-inner">
+          <span class="code-lang-label">${langLabel(s.language)}</span>
+          <pre><code class="language-${s.language === 'typescript' ? 'typescript' : s.language}">${escapeHtml(s.code)}</code></pre>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  // Highlight all code blocks
+  grid.querySelectorAll("pre code").forEach(block => {
+    hljs.highlightElement(block);
+  });
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function toggleCode(id, btn) {
+  const section = document.getElementById(`code-${id}`);
+  const isOpen = section.classList.toggle("open");
+  btn.classList.toggle("open", isOpen);
+  btn.innerHTML = isOpen
+    ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg> Hide Code`
+    : `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> View Code`;
+}
+
+// ─── FILTER BUTTONS ───
+document.getElementById("diffFilter").addEventListener("click", e => {
+  const btn = e.target.closest("[data-diff]");
+  if (!btn) return;
+  activeDiff = btn.dataset.diff;
+  document.querySelectorAll("[data-diff]").forEach(b => {
+    const d = b.dataset.diff;
+    b.classList.toggle("active", b === btn);
+    if (b === btn) b.classList.add(d === "all" ? "all" : d);
+  });
+  renderCards();
+});
+
+document.getElementById("langFilter").addEventListener("click", e => {
+  const btn = e.target.closest("[data-lang]");
+  if (!btn) return;
+  activeLang = btn.dataset.lang;
+  document.querySelectorAll("[data-lang]").forEach(b => {
+    const l = b.dataset.lang;
+    b.classList.toggle("active", b === btn);
+    if (b === btn) b.classList.add(l === "all" ? "lang-all" : l);
+  });
+  renderCards();
+});
+
+// ─── SEARCH ───
+let searchTimeout;
+document.getElementById("searchInput").addEventListener("input", e => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    query = e.target.value;
+    renderCards();
+  }, 180);
+});
+
+// ─── INIT ───
+updateStats();
+renderCards();
+</script>
+</body>
+</html>

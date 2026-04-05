@@ -29,7 +29,7 @@ solutions/
 │   └── 0053_maximum_subarray.java
 └── typescript/
     └── 0021_merge_two_sorted_lists.ts
-website/
+docs/
 └── index.html          ← showcase website (static, no build step)
 ```
 
@@ -40,14 +40,14 @@ website/
 ## Adding a New Solution
 
 1. Add the solution file under the correct language folder
-2. Add an entry to the `SOLUTIONS` array in `website/index.html`
+2. Add an entry to the `SOLUTIONS` array in `docs/index.html`
 3. Commit and push — GitHub Pages auto-deploys
 
 ---
 
 ## Running the Website Locally
 
-Just open `website/index.html` in your browser — no build step or server needed.
+Just open `docs/index.html` in your browser — no build step or server needed.
 
 ---
 

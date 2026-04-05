@@ -276,11 +276,11 @@
       margin-top: 5px;
     }
 
-    .stat.total  .stat-num { color: var(--text); }
+    .stat-num { color: var(--text); }
     .stat.easy   .stat-num { color: var(--green); }
     .stat.medium .stat-num { color: var(--amber); }
     .stat.hard   .stat-num { color: var(--red); }
-    .stat.langs  .stat-num { color: var(--indigo); font-size: 1rem; letter-spacing: -0.01em; padding-top: 0.6rem; }
+    .stat.langs  .stat-num { font-size: 1rem; letter-spacing: -0.01em; padding-top: 0.6rem; }
 
     /* ── CONTROLS ── */
     .controls-wrap {
@@ -354,12 +354,6 @@
     .seg-btn:hover:not(.active) { background: var(--bg); color: var(--text2); }
 
     .seg-btn.active { background: var(--indigo); color: #fff; }
-    .seg-btn.active.easy   { background: var(--green); }
-    .seg-btn.active.medium { background: var(--amber); }
-    .seg-btn.active.hard   { background: var(--red); }
-    .seg-btn.active.python { background: #3b82f6; }
-    .seg-btn.active.java   { background: #f97316; }
-    .seg-btn.active.ts     { background: #0ea5e9; }
 
     /* ── RESULTS META ── */
     .results-meta {
@@ -463,9 +457,9 @@
       font-weight: 600;
       border: 1px solid;
     }
-    .lang-badge.python     { color: #fff; background: #306998; border-color: #306998; }
-    .lang-badge.java       { color: #fff; background: #e76f00; border-color: #e76f00; }
-    .lang-badge.typescript { color: #fff; background: #3178c6; border-color: #3178c6; }
+    .lang-badge.python,
+    .lang-badge.java,
+    .lang-badge.typescript { color: var(--text2); background: var(--bg); border-color: var(--border2); }
 
     .approach-text {
       margin-top: 8px;
